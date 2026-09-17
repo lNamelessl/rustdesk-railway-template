@@ -71,6 +71,7 @@ Copy those three values into **every RustDesk client**
 | `DATA_DIR` | either | `/root` | Working dir (keypair, SQLite, config card). Keep the volume here. |
 | `ALWAYS_USE_RELAY` | hbbs | `Y` (baked) | Set to anything else to attempt direct P2P (not recommended on Railway). |
 | `TEST_HBBS` | hbbs | `no` (baked) | Upstream boot self-test address; `no` disables. |
+| `HBBS_PORT` / `HBBR_PORT` | hbbs / hbbr | `21116` / `21117` | Listening ports, passed explicitly as `-p`. This overrides Railway's injected `PORT` (upstream hbbr would otherwise shift to `PORT+1` and miss the proxied port). TCP proxies target these same ports. |
 
 No deploy-form prompts: deploy the template and everything wires itself up.
 

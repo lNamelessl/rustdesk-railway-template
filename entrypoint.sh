@@ -56,9 +56,14 @@ write_card() {
 }
 
 if [ "${ROLE}" = "hbbs" ]; then
-  ARGS=""
+  # Ports are pinned explicitly. Upstream derives ports from defaults, but
+  # Railway injects PORT=<proxy app port> on TCP-proxied services, and hbbr
+  # computes its port as PORT+1 when PORT is set — which would silently shift
+  # listeners away from the proxied ports. Explicit -p beats both.
+  HBBS_PORT="${HBBS_PORT:-21116}"
+  ARGS="-p ${HBBS_PORT}"
   if [ -n "${RELAY_SERVERS:-}" ]; then
-    ARGS="-r ${RELAY_SERVERS}"
+    ARGS="${ARGS} -r ${RELAY_SERVERS}"
   fi
   echo "[entrypoint] starting: /usr/bin/hbbs ${ARGS}"
   # shellcheck disable=SC2086  # ARGS is an intentional flag list
@@ -91,5 +96,6 @@ if [ "${ROLE}" = "hbbs" ]; then
   exit "${STATUS}"
 fi
 
-echo "[entrypoint] starting: /usr/bin/hbbr"
-exec /usr/bin/hbbr "$@"
+HBBR_PORT="${HBBR_PORT:-21117}"
+echo "[entrypoint] starting: /usr/bin/hbbr -p ${HBBR_PORT}"
+exec /usr/bin/hbbr -p "${HBBR_PORT}" "$@"
