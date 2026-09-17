@@ -1,6 +1,6 @@
 Deploy your own RustDesk remote-desktop server on Railway in one click — **hbbs** (ID/rendezvous server) and **hbbr** (relay server) from the official `rustdesk/rustdesk-server:1.1.16` OSS image, with persistent keypairs and a copy-paste client configuration card generated for you at boot.
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.app/new?github_url=https://github.com/lNamelessl/rustdesk-railway-template)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/rustdesk-template)
 
 **What gets provisioned**
 

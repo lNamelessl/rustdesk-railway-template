@@ -4,7 +4,7 @@ Self-host the [RustDesk](https://github.com/rustdesk/rustdesk) remote-desktop
 server (124k stars) on Railway: **hbbs** (ID/rendezvous) + **hbbr** (relay),
 with a persistent keypair and an auto-generated client configuration card.
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.app/new?github_url=https://github.com/lNamelessl/rustdesk-railway-template)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/rustdesk-template)
 
 ## What you get
 
