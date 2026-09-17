@@ -19,10 +19,10 @@ FROM rustdesk/rustdesk-server:1.1.16
 COPY --from=busybox /bin/busybox /bin/busybox
 
 # exec-form RUN: the base image ships no shell, so RUN must invoke busybox
-# directly. Applets are installed into a dedicated directory to guarantee
-# zero collisions with base-image files.
-RUN ["/bin/busybox", "mkdir", "-p", "/opt/busybox"]
-RUN ["/bin/busybox", "--install", "-s", "/opt/busybox"]
+# directly. The classic base is FROM scratch, so installing applets into
+# /bin cannot collide with anything — and it puts /bin/sh at the canonical
+# path, which `railway ssh` requires to attach to the container.
+RUN ["/bin/busybox", "--install", "-s", "/bin"]
 
 COPY entrypoint.sh /entrypoint.sh
 RUN ["/bin/busybox", "chmod", "755", "/entrypoint.sh"]
@@ -35,7 +35,7 @@ RUN ["/bin/busybox", "chmod", "755", "/entrypoint.sh"]
 #  - TEST_HBBS=no: skip hbbs's built-in boot self-test (upstream runs a
 #    loopback probe at startup and calls process::exit(1) if it fails).
 #    Listening is verified externally via TCP probes instead.
-ENV PATH=/opt/busybox:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     ALWAYS_USE_RELAY=Y \
     TEST_HBBS=no
 
