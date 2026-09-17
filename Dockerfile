@@ -27,6 +27,12 @@ RUN ["/bin/busybox", "--install", "-s", "/bin"]
 COPY entrypoint.sh /entrypoint.sh
 RUN ["/bin/busybox", "chmod", "755", "/entrypoint.sh"]
 
+# The scratch base has no /etc/passwd or /etc/group. Container exec sessions
+# (railway ssh) resolve the connecting user against these files; without them
+# every exec session fails to spawn. The binaries themselves do not need them.
+RUN ["/bin/busybox", "mkdir", "-p", "/etc"]
+RUN ["/bin/busybox", "sh", "-c", "printf 'root:x:0:0:root:/root:/bin/sh\\n' > /etc/passwd && printf 'root:x:0:\\n' > /etc/group"]
+
 # Runtime behavior baked into the image so the Railway template needs zero
 # deploy-form prompts:
 #  - ALWAYS_USE_RELAY=Y: force every session through hbbr. Railway exposes
